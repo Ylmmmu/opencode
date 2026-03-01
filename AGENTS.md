@@ -1,68 +1,71 @@
-# AGENTS.md - Coding Guidelines for This Repository
+# AGENTS.md - 代码规范
 
-## Overview
-使用中文
+## 概述
 
-This repository contains Java implementations of concurrent data structures:
-- `blocking-queue/`: A blocking queue implementation using ReentrantLock and Condition
-- `java-timer/`: A custom timer implementation using PriorityQueue and thread pool
+**语言要求：所有交互和文档必须使用中文（简体）**
 
-## Build, Lint, and Test Commands
+本仓库包含 Java 并发数据结构的实现：
+- `blocking-queue/`：使用 ReentrantLock 和 Condition 实现的阻塞队列
+- `java-timer/`：使用 PriorityQueue 和线程池实现的定时器
 
-### Compilation
+## 编译、Lint 和测试命令
+
+### 编译
 
 ```bash
-# Compile all Java files in a directory
+# 编译目录下的所有 Java 文件
 cd blocking-queue && javac *.java
 cd java-timer && javac *.java
+cd java-thread-pool && javac *.java
 ```
 
-### Running Tests
+### 运行测试
 
 ```bash
-# Run a single test class
+# 运行单个测试类
 cd blocking-queue && java BlockingQueueTest
 cd java-timer && java CustomTimer
+cd java-thread-pool && java SimpleThreadPool
 ```
 
-### Running Individual Classes
+### 运行单个类
 
 ```bash
-# Run main class
+# 运行主类
 cd blocking-queue && java BlockingQueueTest
 cd java-timer && java CustomTimer
 ```
 
 ---
 
-## Code Style Guidelines
+## 代码规范
 
-### General Principles
+### 基本原则
 
-- Write clean, readable code with meaningful names
-- Keep methods short and focused (single responsibility)
-- Use comments to explain "why", not "what"
-- Avoid unnecessary complexity
+- 编写简洁、可读的代码，使用有意义的命名
+- 保持方法短小专注（单一职责）
+- 使用注释解释"为什么"，而不是"做什么"
+- 避免不必要的复杂性
 
-### Naming Conventions
+### 命名规范
 
-| Element | Convention | Example |
+| 元素 | 规范 | 示例 |
 |---------|------------|---------|
-| Classes | PascalCase | `BlockingQueue`, `CustomTimer` |
-| Methods | camelCase | `put()`, `take()`, `schedule()` |
-| Variables | camelCase | `queue`, `taskQueue`, `executeTime` |
-| Constants | UPPER_SNAKE_CASE | `MAX_CAPACITY` |
-| Packages | lowercase | `com.example` |
+| 类名 | PascalCase | `BlockingQueue`, `CustomTimer` |
+| 方法 | camelCase | `put()`, `take()`, `schedule()` |
+| 变量 | camelCase | `queue`, `taskQueue`, `executeTime` |
+| 常量 | UPPER_SNAKE_CASE | `MAX_CAPACITY` |
+| 包名 | lowercase | `com.example` |
 
-### Formatting
+### 格式化
 
-- **Indentation**: 4 spaces (no tabs)
-- **Line length**: Maximum 100 characters
-- **Braces**: Opening brace on same line, closing brace on new line
-- **Blank lines**: Single blank line between logical sections
+- **缩进**：4 个空格（不使用 Tab）
+- **行长度**：最多 100 个字符
+- **大括号**：左括号在同一行，右括号在新行
+- **空行**：逻辑部分之间使用单行空行
 
 ```java
-// Good
+// 良好示例
 public void put(T item) throws InterruptedException {
     lock.lockInterruptibly();
     try {
@@ -76,61 +79,61 @@ public void put(T item) throws InterruptedException {
 }
 ```
 
-### Imports
+### 导入
 
-- Group imports by package type:
-  1. Java standard library (`java.*`)
-  2. Third-party libraries (`com.*`, `org.*`)
-- Use explicit imports (no wildcard `*`)
-- Sort alphabetically within groups
+- 按包类型分组导入：
+  1. Java 标准库 (`java.*`)
+  2. 第三方库 (`com.*`, `org.*`)
+- 使用显式导入（不使用通配符 `*`)
+- 组内按字母顺序排序
 
 ```java
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 ```
 
-### Types and Generics
+### 类型和泛型
 
-- Use generics for type-safe collections: `BlockingQueue<T>`
-- Prefer interfaces over implementations: `List<T>` instead of `ArrayList<T>`
-- Use `@SuppressWarnings` sparingly when casting generics
+- 使用泛型实现类型安全的集合：`BlockingQueue<T>`
+- 优先使用接口而非实现：`List<T>` 而非 `ArrayList<T>`
+- 泛型转换时谨慎使用 `@SuppressWarnings`
 
-### Error Handling
+### 错误处理
 
-- Use specific exceptions: `IllegalArgumentException` for invalid parameters
-- Always restore interrupt status: `Thread.currentThread().interrupt()`
-- Use try-finally for resource cleanup (locks, streams)
+- 使用具体异常：无效参数使用 `IllegalArgumentException`
+- 始终恢复中断状态：`Thread.currentThread().interrupt()`
+- 使用 try-finally 清理资源（锁、流）
 
 ```java
-// Good - proper lock handling with interrupt support
+// 良好示例 - 支持中断的锁处理
 public void put(T item) throws InterruptedException {
     lock.lockInterruptibly();
     try {
-        // critical section
+        // 临界区
     } finally {
         lock.unlock();
     }
 }
 
-// Good - proper interrupt handling
+// 良好示例 - 正确的中断处理
 } catch (InterruptedException e) {
     Thread.currentThread().interrupt();
     return;
 }
 ```
 
-### Concurrency
+### 并发
 
-- Use `volatile` for flags accessed across threads
-- Always release locks in finally blocks
-- Use `lock.lockInterruptibly()` for interruptible operations
-- Signal conditions after state changes
+- 跨线程访问的标志使用 `volatile`
+- 始终在 finally 块中释放锁
+- 可中断操作使用 `lock.lockInterruptibly()`
+- 状态变更后发送条件信号
 
 ### Javadoc
 
-- Document public APIs with Javadoc
-- Include `@param`, `@return`, `@throws` tags
-- Keep descriptions concise
+- 为公共 API 编写 Javadoc 文档
+- 包含 `@param`、`@return`、`@throws` 标签
+- 保持描述简洁
 
 ```java
 /**
@@ -141,31 +144,33 @@ public void put(T item) throws InterruptedException {
 public void put(T item) throws InterruptedException {
 ```
 
-### Testing
+### 测试
 
-- Name test classes: `<ClassName>Test`
-- Use main method for simple tests
-- Test both success and failure cases
-- Include timing/delays where needed
+- 测试类命名：`<类名>Test`
+- 简单测试使用 main 方法
+- 测试成功和失败两种情况
+- 根据需要包含时间/延迟
 
 ---
 
-## File Structure
+## 文件结构
 
 ```
 opencode/
 ├── blocking-queue/
-│   ├── BlockingQueue.java      # Main implementation
-│   └── BlockingQueueTest.java  # Test class
-└── java-timer/
-    └── CustomTimer.java        # Timer implementation with main()
+│   ├── BlockingQueue.java      # 主要实现
+│   └── BlockingQueueTest.java  # 测试类
+├── java-timer/
+│   └── CustomTimer.java        # 定时器实现（含 main()）
+└── java-thread-pool/
+    └── SimpleThreadPool.java   # 线程池实现（含 main()）
 ```
 
 ---
 
-## Common Patterns
+## 常用模式
 
-### Lock and Condition Pattern
+### Lock 和 Condition 模式
 
 ```java
 private final ReentrantLock lock = new ReentrantLock();
@@ -173,7 +178,7 @@ private final Condition notEmpty = lock.newCondition();
 private final Condition notFull = lock.newCondition();
 ```
 
-### Priority Queue with Comparator
+### 带比较器的优先队列
 
 ```java
 this.taskQueue = new PriorityQueue<>(
@@ -181,7 +186,7 @@ this.taskQueue = new PriorityQueue<>(
 );
 ```
 
-### Thread Pool Initialization
+### 线程池初始化
 
 ```java
 this.executor = Executors.newFixedThreadPool(2);
@@ -189,8 +194,8 @@ this.executor = Executors.newFixedThreadPool(2);
 
 ---
 
-## Notes
+## 注意事项
 
-- No build tools (Maven/Gradle) - use raw `javac` and `java`
-- Code uses Chinese comments (matches existing style)
-- All code is single-threaded development, tested manually
+- 不使用构建工具（Maven/Gradle）- 直接使用 `javac` 和 `java`
+- 代码使用中文注释（符合现有风格）
+- 所有代码为单线程开发，手动测试
