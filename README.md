@@ -1,74 +1,74 @@
-# Java Concurrent Data Structures
+# Java 并发数据结构
 
-A collection of Java implementations for common concurrent data structures.
+Java 常用并发数据结构的实现集合。
 
-## Projects
+## 项目
 
-### Blocking Queue
-A thread-safe blocking queue implementation using `ReentrantLock` and `Condition`.
+### 阻塞队列
+使用 `ReentrantLock` 和 `Condition` 实现的线程安全阻塞队列。
 
-**Location**: `blocking-queue/`
+**位置**：`blocking-queue/`
 
-**Features**:
-- Thread-safe put/take operations
-- Blocking when queue is full or empty
-- Circular buffer implementation
+**特性**：
+- 线程安全的 put/take 操作
+- 队列满或为空时阻塞
+- 循环缓冲区实现
 
-**Run**:
+**运行**：
 ```bash
 cd blocking-queue && javac *.java && java BlockingQueueTest
 ```
 
 ---
 
-### Custom Timer
-A scheduled timer implementation using `PriorityQueue` and thread pool.
+### 自定义定时器
+使用 `PriorityQueue` 和线程池实现的定时任务调度器。
 
-**Location**: `java-timer/`
+**位置**：`java-timer/`
 
-**Features**:
-- Task scheduling with delay
-- Priority queue for execution order
-- Daemon thread for task execution
+**特性**：
+- 延迟任务调度
+- 优先队列保证执行顺序
+- 守护线程执行任务
 
-**Run**:
+**运行**：
 ```bash
 cd java-timer && javac *.java && java CustomTimer
 ```
 
 ---
 
-### Simple Thread Pool
-A custom thread pool implementation with fixed worker threads.
+### 简单线程池
+固定工作线程数的自定义线程池实现。
 
-**Location**: `java-thread-pool/`
+**位置**：`java-thread-pool/`
 
-**Features**:
-- Fixed number of worker threads
-- Task queue with blocking operations
-- Graceful shutdown support
+**特性**：
+- 固定数量的工作线程
+- 带阻塞操作的任务队列
+- 支持优雅关闭
 
-**Run**:
+**运行**：
 ```bash
 cd java-thread-pool && javac *.java && java SimpleThreadPool
 ```
 
 ---
 
-## Requirements
+## 需求
 
-- Java 8 or higher
-- No build tools required (raw `javac` and `java`)
+- Java 8 或更高版本
+- 无需构建工具（直接使用 `javac` 和 `java`）
 
-## Building
+## 编译
 
 ```bash
-# Compile all projects
+# 编译所有项目
 cd blocking-queue && javac *.java
 cd java-timer && javac *.java
 cd java-thread-pool && javac *.java
 ```
 
-## Testing
+## 测试
 
-Each project contains a main method for testing. Run with `java <ClassName>`.
+每个项目都包含用于测试的 main 方法。运行方式为 `java <类名>`。
